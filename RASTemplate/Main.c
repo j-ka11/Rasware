@@ -1,24 +1,26 @@
 #include <RASLib/inc/common.h>
 #include <RASLib/inc/gpio.h>
 #include <RASLib/inc/time.h>
+#include <RASLib/inc/motor.h>
+#include "robotathon.h"
 
-// Blink the LED to show we're on
-tBoolean blink_on = true;
+static tMotor *left;
+static tMotor *right;
+float left_speed = 0. right_speed = 0;
+int left_direction = 1, right_direction = 1;
 
-void blink(void) {
-    SetPin(PIN_F3, blink_on);
-    blink_on = !blink_on;
+
+void turn_left(){
+  SetMotor(left, 0.1);
+  SetMotor(right, 0.5);
 }
 
+void turn_right(){
+  SetMotor(right, 0.1);
+  SetMotor(left, 0.5);
+}
 
-// The 'main' function is the entry point of the program
-int main(void) {
-    // Initialization code can go here
-    CallEvery(blink, 0, 0.5);
-    
-    while (1) {
-        // Runtime code can go here
-        Printf("Hello World!\n");
-        
-    }
+int main(void){
+  left = InitializeServoMotor(PIN_B6, false);
+  right = InitializeServoMotor(PIN_B7, true);
 }
